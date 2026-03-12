@@ -1,5 +1,6 @@
 import mlflow
 import mlflow.sklearn
+import dagshub
 
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
@@ -12,10 +13,14 @@ from sklearn.neighbors import KNeighborsClassifier
 
 import pandas as pd
 
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+dagshub.init(
+    repo_owner="nishnarudkar",
+    repo_name="MLflow_implementation_MLOPS",
+    mlflow=True
+)
+
 mlflow.set_experiment("Breast_Cancer_Model_Comparison")
 
-# Load dataset
 data = load_breast_cancer()
 
 X = pd.DataFrame(data.data, columns=data.feature_names)
@@ -25,7 +30,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# Different models
 models = {
     "LogisticRegression": LogisticRegression(max_iter=500),
     "RandomForest": RandomForestClassifier(n_estimators=100),
@@ -49,7 +53,9 @@ for model_name, model in models.items():
 
         mlflow.log_metric("train_accuracy", train_acc)
         mlflow.log_metric("test_accuracy", test_acc)
+        mlflow.log_param("train_samples", len(X_train))
+        mlflow.log_param("test_samples", len(X_test))
 
-        mlflow.sklearn.log_model(model, name=model_name)
+        mlflow.sklearn.log_model(model, artifact_path=model_name)
 
 print("All models logged successfully!")
