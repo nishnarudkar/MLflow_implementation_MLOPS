@@ -4,7 +4,7 @@ A comprehensive machine learning project demonstrating MLflow and DagsHub integr
 
 ## Overview
 
-This project showcases modern MLOps practices by training and comparing multiple classification models with full experiment tracking capabilities. It demonstrates how to use MLflow with DagsHub for managing the complete ML lifecycle with cloud-based experiment tracking and collaboration.
+This project showcases modern MLOps practices by training and comparing multiple classification models with full experiment tracking capabilities. It demonstrates how to use MLflow with DagsHub for managing the complete ML lifecycle with cloud-based experiment tracking, visualization, and collaboration.
 
 ### Models Implemented
 - **Logistic Regression** - Baseline linear model
@@ -21,11 +21,12 @@ This project showcases modern MLOps practices by training and comparing multiple
 - Artifact storage and management
 - Team collaboration and sharing
 
-📊 **Model Comparison**
+📊 **Model Comparison & Visualization**
 - Side-by-side performance metrics
 - Training vs test accuracy tracking
 - Sample size tracking
-- Easy model selection for deployment
+- Automated comparison chart generation
+- Visual performance analysis
 
 🔧 **MLOps Best Practices**
 - Reproducible experiments
@@ -33,6 +34,7 @@ This project showcases modern MLOps practices by training and comparing multiple
 - Modular code structure
 - Automated model logging
 - Remote experiment tracking
+- Artifact versioning
 
 ## Requirements
 
@@ -91,20 +93,29 @@ Or the script will prompt you for credentials on first run.
 python main.py
 ```
 
+The script will:
+- Train all four models
+- Log parameters and metrics to MLflow/DagsHub
+- Save model artifacts
+- Generate a comparison chart
+- Display results in console
+
 3. **View results:**
    - **DagsHub UI**: Visit your DagsHub repository to see experiments
    - **Local MLflow UI**: Run `mlflow ui` and open `http://127.0.0.1:5000`
+   - **Comparison Chart**: Check `model_comparison.png` in your directory
 
 ## Project Structure
 
 ```
 MLflow_implementation_MLOPS/
-├── main.py              # Main training and tracking script
-├── requirements.txt     # Project dependencies
-├── README.md           # Project documentation
-├── .gitignore          # Git ignore rules
-├── mlflow.db           # MLflow tracking database (generated)
-└── mlruns/             # Experiment artifacts and logs (generated)
+├── main.py                  # Main training and tracking script
+├── requirements.txt         # Project dependencies
+├── README.md               # Project documentation
+├── .gitignore              # Git ignore rules
+├── model_comparison.png    # Generated comparison chart
+├── mlflow.db               # MLflow tracking database (generated)
+└── mlruns/                 # Experiment artifacts and logs (generated)
 ```
 
 ## What Gets Logged
@@ -112,13 +123,22 @@ MLflow_implementation_MLOPS/
 For each model, MLflow tracks:
 - **Parameters**: 
   - Model name
-  - Training samples count
-  - Test samples count
+  - Training samples count (455)
+  - Test samples count (114)
 - **Metrics**: 
   - Training accuracy
   - Test accuracy
-- **Artifacts**: Serialized model files
+- **Artifacts**: 
+  - Serialized model files
+  - Model comparison visualization chart
 - **Metadata**: Run timestamps and execution details
+
+## Visualization
+
+The script automatically generates a bar chart comparing test accuracy across all models. This chart is:
+- Saved locally as `model_comparison.png`
+- Logged as an artifact in MLflow
+- Accessible through the DagsHub/MLflow UI
 
 ## DagsHub Integration
 
@@ -137,6 +157,7 @@ Access the DagsHub or MLflow UI to:
 - Compare model performance across runs
 - Visualize metrics and parameters
 - Download trained models
+- View comparison charts
 - Track experiment history
 - Select the best model for deployment
 - Share results with collaborators
@@ -144,10 +165,11 @@ Access the DagsHub or MLflow UI to:
 ## Dataset
 
 **Wisconsin Breast Cancer Dataset**
-- 569 samples
+- 569 samples (455 train / 114 test)
 - 30 features
 - Binary classification (malignant/benign)
 - Loaded via scikit-learn
+- 80/20 train-test split with random_state=42
 
 ## Contributing
 
